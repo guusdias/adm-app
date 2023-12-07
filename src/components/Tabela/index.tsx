@@ -1,5 +1,5 @@
 import {
-    Paper,
+  Paper,
   Table,
   TableBody,
   TableCell,
@@ -7,8 +7,20 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
+import IConsulta from "../../types/IConsultas";
+import styled from "@emotion/styled";
 
-function Tabela() {
+const CelulaEstilizada = styled(TableCell)(()=>({
+    [`&.${tableCellClasses.head}`]:{
+        color: "var(--azul-escuro)",
+        fontSize: 18,
+        fontWeight: 700,
+        fontFamily: "var(--fonte-primary)"
+    }
+})
+)
+
+function Tabela({ consultas }: { consultas: IConsulta[] | null }) {
   return (
     <>
       <TableContainer component={Paper}>
@@ -19,11 +31,20 @@ function Tabela() {
             </TableRow>
           </TableHead>
           <TableBody>
-            <TableRow>
-                <TableCell component="th" scope="row">11/56/2023
-                </TableCell>
-                <TableCell>08:30</TableCell>
-            </TableRow>
+            {consultas?.map((linha)=> {
+                return (
+                  <TableRow>
+                    <TableCell component="th" scope="row">
+                      {new Date(linha.data).toLocaleDateString()}
+                    </TableCell>
+                    <TableCell>{linha.horario}</TableCell>
+                    <TableCell>{linha.profissional[0].nome}</TableCell>
+                    <TableCell>{linha.profissional[0].especialidade}</TableCell>
+                    <TableCell>{linha.paciente}</TableCell>
+                    <TableCell>{linha.modalidade}</TableCell>
+                  </TableRow>
+                );
+            })}
           </TableBody>
         </Table>
       </TableContainer>
